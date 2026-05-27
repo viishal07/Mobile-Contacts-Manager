@@ -1,0 +1,83 @@
+<div class="dialog-wrapper">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h2 mat-dialog-title>{{ isEdit ? 'Edit Contact' : 'Add Contact' }}</h2>
+    <button mat-icon-button (click)="cancel()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Avatar preview -->
+  <div class="avatar-preview" [style.background-color]="avatarColor">
+    {{ initials }}
+  </div>
+
+  <!-- Form -->
+  <mat-dialog-content>
+    <form [formGroup]="form" class="contact-form">
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>First Name *</mat-label>
+          <input matInput formControlName="firstName" placeholder="John" />
+          @if (form.get('firstName')?.hasError('required') && form.get('firstName')?.touched) {
+            <mat-error>First name is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" placeholder="Doe" />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput formControlName="email" placeholder="john.doe@example.com" type="email" />
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>Please enter a valid email address</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <mat-icon matPrefix>phone</mat-icon>
+        <input matInput formControlName="phoneNumber" placeholder="+1-555-0100" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Company</mat-label>
+        <mat-icon matPrefix>business</mat-icon>
+        <input matInput formControlName="company" placeholder="Acme Corp" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Address</mat-label>
+        <mat-icon matPrefix>location_on</mat-icon>
+        <textarea matInput formControlName="address" placeholder="123 Main St, City, State" rows="2"></textarea>
+      </mat-form-field>
+
+      <!-- Favorite toggle -->
+      <div class="favorite-row">
+        <div class="fav-label">
+          <mat-icon class="star-icon">star</mat-icon>
+          Mark as Favorite
+        </div>
+        <mat-slide-toggle formControlName="favorite" color="primary" />
+      </div>
+
+    </form>
+  </mat-dialog-content>
+
+  <!-- Actions -->
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button (click)="cancel()" type="button">Cancel</button>
+    <button mat-flat-button color="primary" (click)="submit()" type="button">
+      <mat-icon>{{ isEdit ? 'save' : 'person_add' }}</mat-icon>
+      {{ isEdit ? 'Save Changes' : 'Add Contact' }}
+    </button>
+  </mat-dialog-actions>
+
+</div>

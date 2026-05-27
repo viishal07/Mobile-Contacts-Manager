@@ -1,0 +1,64 @@
+<div class="contacts-page">
+
+  <!-- Left Panel: List -->
+  <section class="list-panel">
+
+    <!-- Header -->
+    <div class="panel-header">
+      <h1 class="panel-title">{{ favoritesOnly() ? '★ Favorites' : 'Contacts' }}</h1>
+      <button mat-mini-fab color="primary" (click)="openAddDialog()" matTooltip="Add new contact">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput placeholder="Search contacts..." [formControl]="searchControl" autocomplete="off" />
+        @if (searchControl.value) {
+          <button mat-icon-button matSuffix (click)="clearSearch()" matTooltip="Clear">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- Loading bar -->
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" color="primary" />
+    }
+
+    <!-- Contact count -->
+    <div class="contact-count">
+      {{ totalCount() }} {{ totalCount() === 1 ? 'contact' : 'contacts' }}
+    </div>
+
+    <!-- Contact list -->
+    <app-contact-list
+      [contacts]="contacts()"
+      [selectedId]="selectedContact()?.id ?? null"
+      [loading]="loading()"
+      (contactSelected)="selectContact($event)" />
+
+    <!-- Pagination -->
+    @if (totalCount() > pageSize()) {
+      <mat-paginator
+        [length]="totalCount()"
+        [pageSize]="pageSize()"
+        [pageIndex]="page()"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="onPageChange($event)"
+        aria-label="Select page" />
+    }
+  </section>
+
+  <!-- Right Panel: Detail -->
+  <section class="detail-panel">
+    <app-contact-detail
+      [contact]="selectedContact()"
+      (editContact)="openEditDialog($event)"
+      (deleteContact)="openDeleteDialog($event)" />
+  </section>
+
+</div>

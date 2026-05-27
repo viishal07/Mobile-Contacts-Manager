@@ -1,0 +1,101 @@
+@if (contact) {
+  <div class="contact-detail" [@fadeIn]>
+
+    <!-- Hero section -->
+    <div class="detail-hero">
+      <div
+        class="detail-avatar"
+        [style.background-color]="getAvatarColor(contact.fullName)">
+        {{ contact.initials }}
+      </div>
+
+      <h2 class="detail-name">{{ contact.fullName }}</h2>
+
+      @if (contact.company) {
+        <p class="detail-company">
+          <mat-icon>business</mat-icon>
+          {{ contact.company }}
+        </p>
+      }
+
+      @if (contact.favorite) {
+        <div class="favorite-badge">
+          <mat-icon>star</mat-icon>
+          Favorite
+        </div>
+      }
+    </div>
+
+    <!-- Contact info cards -->
+    <div class="detail-body">
+
+      @if (contact.email) {
+        <div class="info-card">
+          <div class="info-icon">
+            <mat-icon>email</mat-icon>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Email</div>
+            <a [href]="'mailto:' + contact.email" class="info-value link">{{ contact.email }}</a>
+          </div>
+        </div>
+      }
+
+      @if (contact.phoneNumber) {
+        <div class="info-card">
+          <div class="info-icon">
+            <mat-icon>phone</mat-icon>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Phone</div>
+            <a [href]="'tel:' + contact.phoneNumber" class="info-value link">{{ contact.phoneNumber }}</a>
+          </div>
+        </div>
+      }
+
+      @if (contact.address) {
+        <div class="info-card">
+          <div class="info-icon">
+            <mat-icon>location_on</mat-icon>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Address</div>
+            <div class="info-value">{{ contact.address }}</div>
+          </div>
+        </div>
+      }
+
+      <div class="info-card">
+        <div class="info-icon">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="info-content">
+          <div class="info-label">Added</div>
+          <div class="info-value">{{ contact.createdAt | date:'mediumDate' }}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="detail-actions">
+      <button mat-flat-button color="primary" (click)="editContact.emit(contact)">
+        <mat-icon>edit</mat-icon>
+        Edit Contact
+      </button>
+      <button mat-stroked-button color="warn" (click)="deleteContact.emit(contact)">
+        <mat-icon>delete_outline</mat-icon>
+        Delete
+      </button>
+    </div>
+
+  </div>
+} @else {
+  <div class="empty-detail">
+    <div class="empty-illustration">
+      <mat-icon>person_search</mat-icon>
+    </div>
+    <h3>Select a contact</h3>
+    <p>Choose a contact from the list to view their details</p>
+  </div>
+}

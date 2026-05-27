@@ -1,0 +1,59 @@
+<div class="contact-list">
+
+  <!-- Skeleton loading -->
+  @if (loading && contacts.length === 0) {
+    @for (i of [1,2,3,4,5,6]; track i) {
+      <div class="contact-item skeleton">
+        <div class="avatar skeleton-box"></div>
+        <div class="contact-info">
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line narrow"></div>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- Contacts -->
+  @for (contact of contacts; track trackById($index, contact)) {
+    <div
+      class="contact-item"
+      [class.selected]="contact.id === selectedId"
+      (click)="contactSelected.emit(contact)"
+      matRipple>
+
+      <!-- Avatar -->
+      <div
+        class="avatar"
+        [style.background-color]="getAvatarColor(contact.fullName)">
+        {{ contact.initials }}
+      </div>
+
+      <!-- Info -->
+      <div class="contact-info">
+        <div class="contact-name">
+          {{ contact.fullName }}
+          @if (contact.favorite) {
+            <mat-icon class="fav-icon">star</mat-icon>
+          }
+        </div>
+        <div class="contact-sub ellipsis">
+          {{ contact.email || contact.phoneNumber || contact.company || '—' }}
+        </div>
+      </div>
+
+      <!-- Phone -->
+      @if (contact.phoneNumber) {
+        <div class="contact-phone">{{ contact.phoneNumber }}</div>
+      }
+    </div>
+  }
+
+  <!-- Empty state -->
+  @if (!loading && contacts.length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">people_outline</mat-icon>
+      <p>No contacts found</p>
+      <span>Try a different search</span>
+    </div>
+  }
+</div>

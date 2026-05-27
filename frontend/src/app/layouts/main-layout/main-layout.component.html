@@ -1,0 +1,6 @@
+<div class="app-shell" [class.dark-theme]="isDarkMode()">
+  <app-sidebar [isDarkMode]="isDarkMode()" (themeToggle)="toggleTheme()" />
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>
