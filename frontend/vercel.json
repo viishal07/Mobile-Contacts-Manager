@@ -1,9 +1,0 @@
-{
-  "outputDirectory": "dist/contact-manager",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
