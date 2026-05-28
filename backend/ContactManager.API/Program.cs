@@ -8,33 +8,29 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Database ──────────────────────────────────────────────────────────────────
+//  Database 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ── AutoMapper ────────────────────────────────────────────────────────────────
+//  AutoMapper 
 builder.Services.AddAutoMapper(typeof(ContactProfile));
 
-// ── DI Registration ───────────────────────────────────────────────────────────
+//  DI Registration 
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<IContactService, ContactService>();
 
-// ── CORS ──────────────────────────────────────────────────────────────────────
+//  CORS 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins(
-                "http://localhost:4200",
-                "https://localhost:4200")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
-// ── Controllers & Swagger ─────────────────────────────────────────────────────
-builder.Services.AddControllers();
+// Controllers & Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -46,13 +42,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// ── Logging ───────────────────────────────────────────────────────────────────
+//  Logging 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 var app = builder.Build();
 
-// ── Middleware Pipeline ───────────────────────────────────────────────────────
+//  Middleware Pipeline 
 app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
@@ -70,7 +66,7 @@ app.UseCors("AllowAngular");
 app.UseAuthorization();
 app.MapControllers();
 
-// ── Auto-migrate on startup ───────────────────────────────────────────────────
+//  Auto-migrate on startup 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
