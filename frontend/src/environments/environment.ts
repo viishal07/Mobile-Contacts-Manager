@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: "https://mobile-contact-api.onrender.com/api",
+    apiUrl: "https://mobile-contacts-manager.onrender.com/api",
 };
