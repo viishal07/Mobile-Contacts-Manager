@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist/contact-manager/browser",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/contact-manager/browser",
   "framework": null,
   "rewrites": [
     {
